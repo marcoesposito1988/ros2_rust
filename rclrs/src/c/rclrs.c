@@ -8,6 +8,7 @@
 
 static rcl_context_t default_context;
 
+int32_t rclrs_native_ok() { return rcl_context_is_valid(&default_context); }
 
 int32_t rclrs_native_init() {
   // TODO(esteve): parse args

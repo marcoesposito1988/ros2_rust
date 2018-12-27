@@ -43,11 +43,7 @@ extern "C" {
         number_of_services: size_t,
     ) -> c_int;
 
-    fn rclrs_native_wait_set_clear_subscriptions(wait_set_handle: uintptr_t) -> c_int;
-
-    fn rclrs_native_wait_set_clear_services(wait_set_handle: uintptr_t) -> c_int;
-
-    fn rclrs_native_wait_set_clear_clients(wait_set_handle: uintptr_t) -> c_int;
+    fn rclrs_native_wait_set_clear(wait_set_handle: uintptr_t) -> c_int;
 
     fn rclrs_native_wait_set_add_subscription(
         wait_set_handle: uintptr_t,
@@ -149,26 +145,8 @@ pub fn wait_set_init(
     }
 }
 
-pub fn wait_set_clear_subscriptions(wait_set_handle: uintptr_t) -> Result<(), RCLError> {
-    let ret = unsafe { rclrs_native_wait_set_clear_subscriptions(wait_set_handle) };
-    let rcl_code = RCLStatusCode::from(ret);
-    match rcl_code {
-        RCLStatusCode::OK => Ok(()),
-        _ => Err(generate_rcl_error(ret)),
-    }
-}
-
-pub fn wait_set_clear_services(wait_set_handle: uintptr_t) -> Result<(), RCLError> {
-    let ret = unsafe { rclrs_native_wait_set_clear_services(wait_set_handle) };
-    let rcl_code = RCLStatusCode::from(ret);
-    match rcl_code {
-        RCLStatusCode::OK => Ok(()),
-        _ => Err(generate_rcl_error(ret)),
-    }
-}
-
-pub fn wait_set_clear_clients(wait_set_handle: uintptr_t) -> Result<(), RCLError> {
-    let ret = unsafe { rclrs_native_wait_set_clear_clients(wait_set_handle) };
+pub fn wait_set_clear(wait_set_handle: uintptr_t) -> Result<(), RCLError> {
+    let ret = unsafe { rclrs_native_wait_set_clear(wait_set_handle) };
     let rcl_code = RCLStatusCode::from(ret);
     match rcl_code {
         RCLStatusCode::OK => Ok(()),
@@ -241,11 +219,7 @@ pub fn spin_once(node: &node::Node, timeout: i64) -> () {
         number_of_services,
     ).unwrap();
 
-    wait_set_clear_subscriptions(wait_set_handle).unwrap();
-
-    wait_set_clear_services(wait_set_handle).unwrap();
-
-    wait_set_clear_clients(wait_set_handle).unwrap();
+    wait_set_clear(wait_set_handle).unwrap();
 
     for subscription in node.subscriptions() {
         wait_set_add_subscription(wait_set_handle, subscription.handle()).unwrap();
