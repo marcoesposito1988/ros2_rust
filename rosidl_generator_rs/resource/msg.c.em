@@ -3,8 +3,8 @@
 #include "rosidl_generator_c/string.h"
 #include "rosidl_generator_c/string_functions.h"
 
-#include "rosidl_generator_c/primitives_array.h"
-#include "rosidl_generator_c/primitives_array_functions.h"
+#include "rosidl_generator_c/primitives_sequence.h"
+#include "rosidl_generator_c/primitives_sequence_functions.h"
 
 @[for subfolder, msg_spec in msg_specs]@
 @{
